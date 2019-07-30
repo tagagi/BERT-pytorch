@@ -15,17 +15,12 @@ class TorchVocab(object):
 
     def __init__(self, counter, max_size=None, min_freq=1, specials=['<pad>', '<oov>'],
                  vectors=None, unk_init=None, vectors_cache=None):
-        """Create a Vocab object from a collections.Counter.
-        Arguments:
-            counter: collections.Counter object holding the frequencies of
-                each value found in the data.
-            max_size: The maximum size of the vocabulary, or None for no
-                maximum. Default: None.
-            min_freq: The minimum frequency needed to include a token in the
-                vocabulary. Values less than 1 will be set to 1. Default: 1.
-            specials: The list of special tokens (e.g., padding or eos) that
-                will be prepended to the vocabulary in addition to an <unk>
-                token. Default: ['<pad>']
+        """用一个 collections.Counter 对象简历 Vocab
+        Args:
+            counter: collections.Counter 对象。预训练文件中的 token 统计 {'token': 10} 
+            max_size: 词表最大长度。 None for no maximum. Default: None.
+            min_freq: 最小词频。 Default: 1.
+            specials: 列表， 包含一系列特殊字符，如['<pad', 'unk']等。  Default: ['<pad>']
             vectors: One of either the available pretrained vectors
                 or custom pretrained vectors (see Vocab.load_vectors);
                 or a list of aforementioned vectors
@@ -39,23 +34,24 @@ class TorchVocab(object):
         min_freq = max(min_freq, 1)
 
         self.itos = list(specials)
-        # frequencies of special tokens are not counted when building vocabulary
-        # in frequency order
+
+        # 特殊字符不计入统计词频
         for tok in specials:
             del counter[tok]
 
         max_size = None if max_size is None else max_size + len(self.itos)
 
-        # sort by frequency, then alphabetically
+        # 先按照字典序排列，然后按照词频排列
         words_and_frequencies = sorted(counter.items(), key=lambda tup: tup[0])
         words_and_frequencies.sort(key=lambda tup: tup[1], reverse=True)
 
+        # 依据词频和字典长度过滤数据
         for word, freq in words_and_frequencies:
             if freq < min_freq or len(self.itos) == max_size:
                 break
             self.itos.append(word)
 
-        # stoi is simply a reverse dict for itos
+        # token2idx
         self.stoi = {tok: i for i, tok in enumerate(self.itos)}
 
         self.vectors = None
@@ -163,6 +159,7 @@ class WordVocab(Vocab):
 
     @staticmethod
     def load_vocab(vocab_path: str) -> 'WordVocab':
+        """将 WordVocab 对象序列化到 vocab_path 文件中 """
         with open(vocab_path, "rb") as f:
             return pickle.load(f)
 

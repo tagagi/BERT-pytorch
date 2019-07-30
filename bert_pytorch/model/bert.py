@@ -10,12 +10,13 @@ class BERT(nn.Module):
     """
 
     def __init__(self, vocab_size, hidden=768, n_layers=12, attn_heads=12, dropout=0.1):
-        """
-        :param vocab_size: vocab_size of total words
-        :param hidden: BERT model hidden size
-        :param n_layers: numbers of Transformer blocks(layers)
-        :param attn_heads: number of attention heads
-        :param dropout: dropout rate
+        """ Bert 模型
+        Args:
+            vocab_size: 词表大小
+            hidden: BERT 的 hidden size
+            n_layers: Transformer 的层数
+            attn_heads: Multi-head Attention 中的 head 数
+            dropout: dropout rate
         """
 
         super().__init__()
@@ -26,10 +27,10 @@ class BERT(nn.Module):
         # paper noted they used 4*hidden_size for ff_network_hidden_size
         self.feed_forward_hidden = hidden * 4
 
-        # embedding for BERT, sum of positional, segment, token embeddings
+        # BERT的输入embedding, 由 positional, segment, token embeddings 三部分组成
         self.embedding = BERTEmbedding(vocab_size=vocab_size, embed_size=hidden)
 
-        # multi-layers transformer blocks, deep network
+        # 多层的 Transformer (Encoder)
         self.transformer_blocks = nn.ModuleList(
             [TransformerBlock(hidden, attn_heads, hidden * 4, dropout) for _ in range(n_layers)])
 

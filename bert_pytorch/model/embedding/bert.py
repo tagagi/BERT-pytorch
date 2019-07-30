@@ -6,19 +6,18 @@ from .segment import SegmentEmbedding
 
 class BERTEmbedding(nn.Module):
     """
-    BERT Embedding which is consisted with under features
-        1. TokenEmbedding : normal embedding matrix
-        2. PositionalEmbedding : adding positional information using sin, cos
-        2. SegmentEmbedding : adding sentence segment info, (sent_A:1, sent_B:2)
-
-        sum of all these features are output of BERTEmbedding
+    BERT Embedding 由以下三部分组成：
+        1. TokenEmbedding : token embedding matrix
+        2. PositionalEmbedding : 位置信息编码
+        2. SegmentEmbedding : 句子信息编码, (sent_A:1, sent_B:2)
     """
 
     def __init__(self, vocab_size, embed_size, dropout=0.1):
         """
-        :param vocab_size: total vocab size
-        :param embed_size: embedding size of token embedding
-        :param dropout: dropout rate
+        Args:
+            vocab_size: 词表大小
+            embed_size: token embedding 的维度
+            dropout: dropout rate
         """
         super().__init__()
         self.token = TokenEmbedding(vocab_size=vocab_size, embed_size=embed_size)
