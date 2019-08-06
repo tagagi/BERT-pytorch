@@ -4,7 +4,6 @@
 
 [TOC]
 
-
 ## 1.  整体描述
 
 BERT-Pytorch 在分发包时，主要设置了两大功能：
@@ -38,7 +37,7 @@ python3 -m ipdb test_bert.py -c data/corpus.small -v data/vocab.small -o output/
 
 
 
-![](http://ww1.sinaimg.cn/large/006gOeiSly1g5q3jbumisj31400u0myh.jpg)
+![1](.\img\1.png)
 
 从模型整体上看， 分为两大部分： **MaskedLanguageModel** 与 **NextSentencePrediction** ，并且二者都以 **BERT** 为前置模型，在分别加上一个全连接层与 softmax 层来分别获得输出。
 
@@ -46,7 +45,7 @@ python3 -m ipdb test_bert.py -c data/corpus.small -v data/vocab.small -o output/
 
 ### 1. Bert Model
 
-![整体结构图](.\img\all.png)
+![2](.\img\2.png)
 
 这部分其实就是 Transformer Encoder 部分 + BERT Embedding， 如果不熟悉 Transformer 的同学，恰好可以从此处来加深理解。
 
