@@ -11,6 +11,12 @@ class Attention(nn.Module):
     """
 
     def forward(self, query, key, value, mask=None, dropout=None):
+        """
+        Args: query, key, value 同源且 shape 相同
+            query: [batch_size, head_num, seq_len, dim]
+            key: [batch_size, head_num, seq_len, dim]
+            value: [batch_size, head_num, seq_len, dim]
+        """
         scores = torch.matmul(query, key.transpose(-2, -1)) \
                  / math.sqrt(query.size(-1))
 

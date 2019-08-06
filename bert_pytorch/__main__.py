@@ -37,10 +37,12 @@ def train():
 
     args = parser.parse_args()
 
+    # 读词表
     print("Loading Vocab", args.vocab_path)
     vocab = WordVocab.load_vocab(args.vocab_path)
     print("Vocab Size: ", len(vocab))
 
+    # 数据准备
     print("Loading Train Dataset", args.train_dataset)
     train_dataset = BERTDataset(args.train_dataset, vocab, seq_len=args.seq_len,
                                 corpus_lines=args.corpus_lines, on_memory=args.on_memory)
@@ -54,14 +56,17 @@ def train():
     test_data_loader = DataLoader(test_dataset, batch_size=args.batch_size, num_workers=args.num_workers) \
         if test_dataset is not None else None
 
+    # 模型准备
     print("Building BERT model")
     bert = BERT(len(vocab), hidden=args.hidden, n_layers=args.layers, attn_heads=args.attn_heads)
 
+    # 训练过程准备
     print("Creating BERT Trainer")
     trainer = BERTTrainer(bert, len(vocab), train_dataloader=train_data_loader, test_dataloader=test_data_loader,
                           lr=args.lr, betas=(args.adam_beta1, args.adam_beta2), weight_decay=args.adam_weight_decay,
                           with_cuda=args.with_cuda, cuda_devices=args.cuda_devices, log_freq=args.log_freq)
 
+    # 开始训练
     print("Training Start")
     for epoch in range(args.epochs):
         trainer.train(epoch)

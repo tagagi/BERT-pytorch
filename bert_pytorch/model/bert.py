@@ -27,17 +27,22 @@ class BERT(nn.Module):
         # paper noted they used 4*hidden_size for ff_network_hidden_size
         self.feed_forward_hidden = hidden * 4
 
-        # BERT的输入embedding, 由 positional, segment, token embeddings 三部分组成
+        # BERT的输入 embedding, 由 positional, segment, token embeddings 三部分组成
         self.embedding = BERTEmbedding(vocab_size=vocab_size, embed_size=hidden)
 
-        # 多层的 Transformer (Encoder)
+        # 多层的 Transformer (Encoder), 由多个 TransformerBlock 组成
         self.transformer_blocks = nn.ModuleList(
             [TransformerBlock(hidden, attn_heads, hidden * 4, dropout) for _ in range(n_layers)])
 
     def forward(self, x, segment_info):
-        # attention masking for padded token
-        # torch.ByteTensor([batch_size, 1, seq_len, seq_len)
+        """
+        x: [batch_size, seq_len]
+        segment_info: [batch_size, seq_len]
+        """
+
+        # attention masking for padded token， 
         mask = (x > 0).unsqueeze(1).repeat(1, x.size(1), 1).unsqueeze(1)
+        # [batch_size, 1, seq_len, seq_len]
 
         # embedding the indexed sequence to sequence of vectors
         x = self.embedding(x, segment_info)
