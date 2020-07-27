@@ -40,7 +40,9 @@ class BERT(nn.Module):
         segment_info: [batch_size, seq_len]
         """
 
-        # attention masking for padded token， 
+        # attention masking for padded token，
+        # [batch_size, seq_len]->[batch_size,1,seq_len] ->[batch_size,seq_len,seq_len]
+        # ->[batch_size,1,seq_len,seq_len]
         mask = (x > 0).unsqueeze(1).repeat(1, x.size(1), 1).unsqueeze(1)
         # [batch_size, 1, seq_len, seq_len]
 

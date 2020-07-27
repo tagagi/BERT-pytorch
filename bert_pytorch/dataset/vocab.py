@@ -8,7 +8,7 @@ class TorchVocab(object):
     Attributes:
         freqs: A collections.Counter object holding the frequencies of tokens
             in the data used to build the Vocab.
-        stoi: A collections.defaultdict instance mapping token strings to
+        stoi: A collections.default dict instance mapping token strings to
             numerical identifiers.
         itos: A list of token strings indexed by their numerical identifiers.
     """
@@ -115,6 +115,7 @@ class Vocab(TorchVocab):
 class WordVocab(Vocab):
     def __init__(self, texts, max_size=None, min_freq=1):
         print("Building Vocab")
+        print('texts',texts)
         counter = Counter()
         for line in tqdm.tqdm(texts):
             if isinstance(line, list):

@@ -5,6 +5,20 @@ import random
 
 
 class BERTDataset(Dataset):
+    '''
+     {"bert_input": bert_input,
+      "bert_label": bert_label,
+      "segment_label": segment_label,
+      "is_next": is_next_label}
+
+    -bert_input：一个input，包含两个句子，句子内部15%选择输入mask,每个mask按80%，10%，10%依次输入mask, wrong word, correct word的index.
+                第二句子按50%选择正确的句子，50%随机选择一个错误的句子，拼成输入。
+    -bert_label：按15%选择的mask，标记其正确的target_label，其他未选择均为0.
+    -segment_label：标记前后句子，[0,0,0,0,1,1,1,1....]
+    -is_next：标记两个句子之间的关系，label(isNotNext:0, isNext:1)
+
+    '''
+
     def __init__(self, corpus_path, vocab, seq_len, encoding="utf-8", corpus_lines=None, on_memory=True):
         self.vocab = vocab
         self.seq_len = seq_len
