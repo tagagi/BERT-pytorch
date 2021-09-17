@@ -17,6 +17,8 @@ BERT-Pytorch 在分发包时，主要设置了两大功能：
 
 ```
 python3 -m ipdb test_bert_vocab.py  # 调试 bert-vocab
+# 本机上运行使用：
+python -m test_bert_vocab -c D:/codes/BERT-pytorch/data/corpus.small -o D:/codes/BERT-pytorch/data/corpus.out 
 ```
 
 其实 bert-vocab 内部并没有什么重要信息，无非就是一些自然语言处理中常见的预处理手段， 自己花个十分钟调试一下就明白了， 我加了少部分注释， 很容易就能明白。
@@ -33,6 +35,8 @@ TorchVocab --> Vocab --> WordVocab
 
 ```
 python3 -m ipdb test_bert.py -c data/corpus.small -v data/vocab.small -o output/bert.model
+# 本机上运行使用下面这个：
+python -m test_bert -c D:/codes/BERT-pytorch/data/corpus.small -v D:/codes/BERT-pytorch/data/vocab.small -o D:/codes/BERT-pytorch/output/bert.model
 ```
 
 ![](img\1.png)

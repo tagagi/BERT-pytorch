@@ -1,4 +1,3 @@
-
 from bert_pytorch.dataset.vocab import *
 
 

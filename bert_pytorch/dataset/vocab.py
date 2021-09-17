@@ -154,7 +154,7 @@ class WordVocab(Vocab):
                  if idx < len(self.itos)
                  else "<%d>" % idx
                  for idx in seq
-                 if not with_pad or idx != self.pad_index]
+                 if not with_pad or idx != self.pad_index] # 如果下标越界直接用<下标>表示句子
 
         return " ".join(words) if join else words
 
